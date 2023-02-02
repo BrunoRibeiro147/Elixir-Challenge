@@ -10,6 +10,10 @@
 
 - VSCode with ElixirLS preferred
 
+### Insomnia
+
+- The docs folder contains a insomnia json file who provides the `queries` and `mutations` of `BlogPost` context
+
 ### Development
 
 - Copy contents of .env.local.example to .env.local
