@@ -28,16 +28,34 @@ defmodule SntxWeb.ConnCase do
 
       # The default endpoint for testing
       @endpoint SntxWeb.Endpoint
+
+      def logged_conn(%{conn: conn}) do
+        user = Sntx.Factory.insert(:account)
+        {:ok, token, _} = Sntx.Guardian.encode_and_sign(user)
+
+        logged_conn = Plug.Conn.put_req_header(conn, "authorization", "Bearer #{token}")
+
+        %{logged_conn: logged_conn, logged_user: user}
+      end
+
+      def graphql(conn, query) do
+        conn
+        |> post("/graphql", %{
+          "query" => query
+        })
+      end
+
+      def graphql(conn, query, args) do
+        conn
+        |> post("/graphql", %{
+          "query" => query,
+          "variables" => args
+        })
+      end
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Sntx.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Sntx.Repo, {:shared, self()})
-    end
-
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    %{conn: Phoenix.ConnTest.build_conn()}
   end
 end

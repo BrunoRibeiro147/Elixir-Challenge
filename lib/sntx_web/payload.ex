@@ -24,6 +24,7 @@ defmodule SntxWeb.Payload do
     case code do
       :no_access -> dgettext("global", "Access denied")
       :no_user -> dgettext("users", "Account does not exist")
+      :no_blog_post -> dgettext("blog_posts", "Post does not exist")
       :no_permissions -> dgettext("global", "Insufficient permissions")
       :user_unconfirmed -> dgettext("users", "You must confirm your account")
       :user_confirmed -> dgettext("users", "Account has been already confirmed")
